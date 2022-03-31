@@ -1,0 +1,13 @@
+port: "8081"
+
+server:
+  ReadTimeout: 30
+  WriteTimeout: 30
+
+db:
+  user: "postgres"
+  # password: "1q2w3e4r5t"
+  host: "database"
+  port: "5432"
+  dbname: "postgres"
+  sslmode: "disable"  
