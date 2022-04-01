@@ -66,6 +66,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			userGroup.PUT("/:id", h.EditUser)      // Редактировать страницу пользователя
 			userGroup.DELETE("/:id", h.DeleteUser) // Удалить пользователя
 
+			userGroup.POST("/wallet/add", h.AddWallet) // Добавить кошелёк
+			userGroup.POST("/token/buy", h.BuyToken)
+
 		}
 
 	}
