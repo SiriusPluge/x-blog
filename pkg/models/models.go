@@ -24,6 +24,15 @@ type User struct {
 	Deleted          bool      `json:"deleted"`
 }
 
+type UserPublic struct {
+	ID        int    `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Brithday  string `json:"brithday"`
+	Gender    string `json:"gender"`
+	Position  string `json:"position"`
+}
+
 type Post struct {
 	ID              int       `json:"id"`
 	Title           string    `json:"title"`
