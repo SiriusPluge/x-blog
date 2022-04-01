@@ -5,6 +5,7 @@ import (
 	"X-Blog/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
+	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 type BlogApp interface {
@@ -26,12 +27,18 @@ type BlogApp interface {
 	UnfavoritesPost(userID, postID int) exterr.ErrExtender
 }
 
-type Service struct {
-	BlogApp
+type EthApi interface {
+	
 }
 
-func NewService(repos *repository.Repository) *Service {
+type Service struct {
+	BlogApp
+	EthApi
+}
+
+func NewService(repos *repository.Repository, ethClient *ethclient.Client) *Service {
 	return &Service{
 		BlogApp: NewGetService(repos.BlogApp),
+		EthApi: NewEthService(ethClient),
 	}
 }
