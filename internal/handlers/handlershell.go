@@ -41,6 +41,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/sign-up", h.SignUp) // Регистрация пользователя
 		api.POST("/sign-in", h.SignIn) // Аунтетификация пользователя
 
+		api.POST("/whoami", h.Whoami) // Получение публчиных данных о пользователе
+
 		api.GET("/home", h.Home)   // Главная страница
 		api.GET("/posts", h.Posts) // Лента статей
 
@@ -63,6 +65,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			userGroup.GET("/:id", h.GetUser)       // Показать страницу пользователя
 			userGroup.PUT("/:id", h.EditUser)      // Редактировать страницу пользователя
 			userGroup.DELETE("/:id", h.DeleteUser) // Удалить пользователя
+
+			userGroup.POST("/wallet/add", h.AddWallet) // Добавить кошелёк
+			userGroup.POST("/token/buy", h.BuyToken)
+
 		}
 
 	}
