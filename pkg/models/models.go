@@ -19,9 +19,20 @@ type User struct {
 	Brithday         string    `json:"brithday"`
 	Gender           string    `json:"gender"`
 	Position         string    `json:"position"`
+	Wallet           string    `json:"wallet"`
 	RegistrationDate time.Time `json:"registration_date"`
 	AccessLevel      int       `json:"access_level"`
 	Deleted          bool      `json:"deleted"`
+}
+
+type UserPublic struct {
+	ID        int    `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Brithday  string `json:"brithday"`
+	Gender    string `json:"gender"`
+	Position  string `json:"position"`
+	Wallet    string `json:"wallet"`
 }
 
 type Post struct {
