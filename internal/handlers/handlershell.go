@@ -69,6 +69,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			userGroup.POST("/wallet/add", h.AddWallet) // Добавить кошелёк
 			userGroup.POST("/token/buy", h.BuyToken)
 
+			userGroup.POST("/gratitude", h.Gratitude) // Отправить благодарность автору статьи (криптовалютой)
 		}
 
 	}

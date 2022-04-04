@@ -591,7 +591,7 @@ func (h *Handler) AddWallet(c *gin.Context) {
 	// получение ID пользователя из сессии
 	userID, errExt := SessionGetUserID(c)
 	if errExt != nil {
-		respError(c, exterr.NewWithExtErr("Handler: LikePost error", errExt))
+		respError(c, exterr.NewWithExtErr("Handler: AddWallet error", errExt))
 		return
 	}
 
@@ -609,9 +609,27 @@ func (h *Handler) BuyToken(c *gin.Context) {
 	// получение ID пользователя из сессии
 	userID, errExt := SessionGetUserID(c)
 	if errExt != nil {
-		respError(c, exterr.NewWithExtErr("Handler: LikePost error", errExt))
+		respError(c, exterr.NewWithExtErr("Handler: BuyToken error", errExt))
 		return
 	}
 
-	respOk(c, fmt.Sprintf("Buy tokens [%d]  succesfull for user[%d]", userID, 0))
+	respOk(c, fmt.Sprintf("BuyTokens [%d]  succesfull for user[%d]", userID, 0))
+}
+
+func (h *Handler) Gratitude(c *gin.Context) {
+	// Проверка доступа пользователя
+	errExt := Authorization(c, models.UserAccess)
+	if errExt != nil {
+		respError(c, errExt)
+		return
+	}
+
+	// получение ID пользователя из сессии
+	userID, errExt := SessionGetUserID(c)
+	if errExt != nil {
+		respError(c, exterr.NewWithExtErr("Handler: Gratitude error", errExt))
+		return
+	}
+
+	respOk(c, fmt.Sprintf("Gratitude [%d]  succesfull for user[%d]", userID, 0))
 }
