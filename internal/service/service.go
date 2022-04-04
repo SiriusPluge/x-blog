@@ -28,7 +28,8 @@ type BlogApp interface {
 }
 
 type EthApi interface {
-	
+	AddWallet() exterr.ErrExtender
+	BuyTokens(tokenAmount int, address string) ([]byte, exterr.ErrExtender)
 }
 
 type Service struct {
