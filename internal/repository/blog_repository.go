@@ -36,14 +36,15 @@ func (p *GetItemPostgres) SignUp(u *models.User) (int, exterr.ErrExtender) {
 			position,
 			email,
 			password,
+			wallet,
 			access_level,
 			registration_date
 		)
-		VALUES($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
+		VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, CURRENT_TIMESTAMP)
 		ON CONFLICT (email) DO NOTHING
 		RETURNING id`, usersTable)
 
-	row := p.db.DB.QueryRow(query, u.FirstName, u.LastName, u.Brithday, u.Gender, u.Position, u.Email, u.Password, models.UserAccess)
+	row := p.db.DB.QueryRow(query, u.FirstName, u.LastName, u.Brithday, u.Gender, u.Position, u.Email, u.Password, u.Wallet, models.UserAccess)
 	if err := row.Scan(&id); err != nil {
 		return 0, exterr.NewWithErr("User not created", err)
 	}
@@ -66,6 +67,7 @@ func (p *GetItemPostgres) GetUserByEmail(email string) (*models.User, exterr.Err
 		&user.Position,
 		&user.Email,
 		&user.Password,
+		&user.Wallet,
 		&user.RegistrationDate,
 		&user.AccessLevel,
 		&user.Deleted,

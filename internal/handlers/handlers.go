@@ -108,6 +108,49 @@ func (h *Handler) SignIn(c *gin.Context) {
 	respOk(c, "Successfully authenticated user")
 }
 
+func (h *Handler) Whoami(c *gin.Context) {
+	// Проверка доступа пользователя
+	errExt := Authorization(c, models.UserAccess)
+	if errExt != nil {
+		respError(c, errExt)
+		return
+	}
+
+	// получение id пользователя из url
+	idString := c.Param("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		respError(c, exterr.NewWithErr("Handler: GetUser convert id to int", err).
+			SetErrCode(http.StatusBadRequest).
+			SetAltMsg("User id must be an integer!"))
+		return
+	}
+
+	// Обращение к базе данных
+	userInfo, errExt := h.services.GetUser(id)
+	if errExt != nil {
+		respError(c, exterr.NewWithExtErr("Handler: GetUser error", errExt))
+		return
+	}
+
+	userPublic := models.UserPublic{
+		ID:        userInfo.ID,
+		FirstName: userInfo.FirstName,
+		LastName:  userInfo.LastName,
+		Brithday:  userInfo.Brithday,
+		Gender:    userInfo.Gender,
+		Position:  userInfo.Position,
+	}
+
+	// if userID != id { // Если пользовать смотрит чужую страницу
+	// }
+
+	// TODO: подумать, как измениь RespOK, чтобы вставлять туда дополниткльную инфу
+	msg := fmt.Sprintf("User show owner - id[%d]", id)
+
+	c.JSON(http.StatusOK, gin.H{"message": msg, "user_info": userPublic})
+}
+
 // TODO: реализовать
 // Главная страница
 func (h *Handler) Home(c *gin.Context) {
@@ -535,4 +578,96 @@ func (h *Handler) DeleteUser(c *gin.Context) {
 	}
 
 	respOk(c, fmt.Sprintf("User %d deleted", id))
+}
+
+func (h *Handler) AddWallet(c *gin.Context) {
+	// Проверка доступа пользователя
+	errExt := Authorization(c, models.UserAccess)
+	if errExt != nil {
+		respError(c, errExt)
+		return
+	}
+
+	// получение ID пользователя из сессии
+	userID, errExt := SessionGetUserID(c)
+	if errExt != nil {
+		respError(c, exterr.NewWithExtErr("Handler: AddWallet error", errExt))
+		return
+	}
+
+	respOk(c, fmt.Sprintf("Add wallet for user[%d]", userID))
+}
+
+type TokenBuyRequest struct {
+	Wallet      string `json:"wallet"`
+	TokenAmount int    `json:"token_amount"`
+}
+
+func (h *Handler) BuyToken(c *gin.Context) {
+	// Проверка доступа пользователя
+	errExt := Authorization(c, models.UserAccess)
+	if errExt != nil {
+		respError(c, errExt)
+		return
+	}
+
+	// получение ID пользователя из сессии
+	userID, errExt := SessionGetUserID(c)
+	if errExt != nil {
+		respError(c, exterr.NewWithExtErr("Handler: BuyToken error", errExt))
+		return
+	}
+
+	respOk(c, fmt.Sprintf("BuyTokens [%d]  succesfull for user[%d]", userID, 0))
+}
+
+func (h *Handler) Gratitude(c *gin.Context) {
+	// Проверка доступа пользователя
+	errExt := Authorization(c, models.UserAccess)
+	if errExt != nil {
+		respError(c, errExt)
+		return
+	}
+
+	// получение ID пользователя из сессии
+	userID, errExt := SessionGetUserID(c)
+	if errExt != nil {
+		respError(c, exterr.NewWithExtErr("Handler: Gratitude error", errExt))
+		return
+	}
+
+	respOk(c, fmt.Sprintf("Gratitude [%d]  succesfull for user[%d]", userID, 0))
+	requestBody := c.Request.Body
+	defer requestBody.Close()
+
+	buf, err := io.ReadAll(requestBody)
+	if err != nil {
+		respError(c,
+			exterr.NewWithErr("Handler: BuyToken can't get request body", err).
+				SetErrCode(http.StatusBadRequest).
+				SetAltMsg(http.StatusText(http.StatusBadRequest)))
+		return
+	}
+
+	// Unmarshal
+	newPost := &TokenBuyRequest{}
+	err = json.Unmarshal(buf, newPost)
+	if err != nil {
+		respError(c,
+			exterr.NewWithErr("Handler: BuyToken unmarshal error", err).
+				SetErrCode(http.StatusBadRequest).
+				SetAltMsg(http.StatusText(http.StatusBadRequest)))
+		return
+	}
+
+	res, _ := h.services.EthApi.BuyTokens(newPost.TokenAmount, newPost.Wallet)
+	if err != nil {
+		respError(c,
+			exterr.NewWithErr("Handler: BuyToken can't buy tokens error", err).
+				SetErrCode(http.StatusBadRequest).
+				SetAltMsg(http.StatusText(http.StatusBadRequest)))
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }

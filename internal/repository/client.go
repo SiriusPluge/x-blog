@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS %s (
 	position VARCHAR(100),
 	email VARCHAR(100) NOT NULL UNIQUE,
 	password VARCHAR(250) NOT NULL,
+	wallet VARCHAR(250),
 	registration_date TIMESTAMP NOT NULL,
 	access_level INT NOT NULL DEFAULT 0,
 	deleted BOOL DEFAULT false
