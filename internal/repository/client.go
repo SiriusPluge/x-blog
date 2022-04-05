@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"X-Blog/pkg/models"
 	"fmt"
 	"strings"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 var schemaUser = fmt.Sprintf(`
@@ -100,6 +102,25 @@ func NewConnectionPostgresDB(cfg *ConfigPostgres) *PostgresDB {
 	}
 
 	db.MustExec(schema)
+
+	query := fmt.Sprintf(`
+		INSERT INTO %s (
+			first_name,
+			last_name,
+			email,
+			password,
+			access_level,
+			registration_date
+		)
+		VALUES($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)
+		ON CONFLICT (email) DO NOTHING
+		RETURNING id`, usersTable)
+
+	_ = db.QueryRow(query, "admin", "admin", viper.GetString("admin.email"), viper.GetString("admin.password"), models.AdminAccess)
+
+	logrus.Info(fmt.Sprintf("admin created: %s \n", "admin"))
+
+	logrus.Info(fmt.Sprintf("connection successful in port: %s \n", cfg.Port))
 
 	return &PostgresDB{DB: db}
 }

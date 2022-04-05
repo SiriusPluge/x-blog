@@ -11,5 +11,9 @@ db:
   dbname: "postgres"
   sslmode: "disable"
 
+admin:
+  email: "admin@admin.admin"
+  password: "admin"
+
 blockchain:
   node: "https://kovan.infura.io/v3/8d15b97225af4b9a9e409096e6e716a6"
