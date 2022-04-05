@@ -6,8 +6,10 @@ server:
 
 db:
   user: "postgres"
-  # password: "1q2w3e4r5t"
   host: "database"
   port: "5432"
   dbname: "postgres"
-  sslmode: "disable"  
+  sslmode: "disable"
+
+blockchain:
+  node: "https://kovan.infura.io/v3/8d15b97225af4b9a9e409096e6e716a6"

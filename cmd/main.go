@@ -8,6 +8,7 @@ import (
 	"os"
 
 	loggo "github.com/bukerdevid/log-go-log"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -33,8 +34,13 @@ func main() {
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
 
+	ethClient, err := ethclient.Dial(viper.GetString("blockchain.node"))
+    if err != nil {
+        logrus.Fatalf("error connect to ethereum: %s", err)
+    }
+
 	repository := repository.NewRepository(db)
-	service := service.NewService(repository)
+	service := service.NewService(repository, ethClient)
 	handlers := handlers.NewHandler(service)
 
 	srv := new(server.Server)

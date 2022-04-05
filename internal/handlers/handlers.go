@@ -598,6 +598,11 @@ func (h *Handler) AddWallet(c *gin.Context) {
 	respOk(c, fmt.Sprintf("Add wallet for user[%d]", userID))
 }
 
+type TokenBuyRequest struct {
+	Wallet      string `json:"wallet"`
+	TokenAmount int    `json:"token_amount"`
+}
+
 func (h *Handler) BuyToken(c *gin.Context) {
 	// Проверка доступа пользователя
 	errExt := Authorization(c, models.UserAccess)
@@ -632,4 +637,37 @@ func (h *Handler) Gratitude(c *gin.Context) {
 	}
 
 	respOk(c, fmt.Sprintf("Gratitude [%d]  succesfull for user[%d]", userID, 0))
+	requestBody := c.Request.Body
+	defer requestBody.Close()
+
+	buf, err := io.ReadAll(requestBody)
+	if err != nil {
+		respError(c,
+			exterr.NewWithErr("Handler: BuyToken can't get request body", err).
+				SetErrCode(http.StatusBadRequest).
+				SetAltMsg(http.StatusText(http.StatusBadRequest)))
+		return
+	}
+
+	// Unmarshal
+	newPost := &TokenBuyRequest{}
+	err = json.Unmarshal(buf, newPost)
+	if err != nil {
+		respError(c,
+			exterr.NewWithErr("Handler: BuyToken unmarshal error", err).
+				SetErrCode(http.StatusBadRequest).
+				SetAltMsg(http.StatusText(http.StatusBadRequest)))
+		return
+	}
+
+	res, _ := h.services.EthApi.BuyTokens(newPost.TokenAmount, newPost.Wallet)
+	if err != nil {
+		respError(c,
+			exterr.NewWithErr("Handler: BuyToken can't buy tokens error", err).
+				SetErrCode(http.StatusBadRequest).
+				SetAltMsg(http.StatusText(http.StatusBadRequest)))
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }

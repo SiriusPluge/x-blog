@@ -36,16 +36,16 @@ func (p *GetItemPostgres) checkUserByEmail(email string) bool {
 
 	row := p.db.DB.QueryRow(query, email)
 	err := row.Scan(
-		user.ID,
-		user.FirstName,
-		user.LastName,
-		user.Brithday,
-		user.Gender,
-		user.Position,
-		user.Email,
-		user.Password,
-		user.RegistrationDate,
-		user.AccessLevel,
+		&user.ID,
+		&user.FirstName,
+		&user.LastName,
+		&user.Brithday,
+		&user.Gender,
+		&user.Position,
+		&user.Email,
+		&user.Password,
+		&user.RegistrationDate,
+		&user.AccessLevel,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
