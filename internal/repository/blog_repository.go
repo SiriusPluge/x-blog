@@ -98,6 +98,7 @@ func (p *GetItemPostgres) GetUserByID(id int) (*models.User, exterr.ErrExtender)
 		&user.Position,
 		&user.Email,
 		&user.Password,
+		&user.Wallet,
 		&user.RegistrationDate,
 		&user.AccessLevel,
 		&user.Deleted,
