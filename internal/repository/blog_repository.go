@@ -67,6 +67,7 @@ func (p *GetItemPostgres) GetUserByEmail(email string) (*models.User, exterr.Err
 		&user.Position,
 		&user.Email,
 		&user.Password,
+		&user.Wallet,
 		&user.RegistrationDate,
 		&user.AccessLevel,
 		&user.Deleted,
