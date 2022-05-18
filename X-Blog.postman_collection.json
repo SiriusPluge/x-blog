@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "426b5ede-0bcc-428e-9b73-bf122b559c1d",
-		"name": "X-Blog",
+		"name": "voting-app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

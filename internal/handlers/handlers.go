@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"X-Blog/pkg/models"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strconv"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
 	"github.com/ansel1/merry"
@@ -622,52 +622,52 @@ func (h *Handler) BuyToken(c *gin.Context) {
 }
 
 func (h *Handler) Gratitude(c *gin.Context) {
-	// Проверка доступа пользователя
-	errExt := Authorization(c, models.UserAccess)
-	if errExt != nil {
-		respError(c, errExt)
-		return
-	}
+	// // Проверка доступа пользователя
+	// errExt := Authorization(c, models.UserAccess)
+	// if errExt != nil {
+	// 	respError(c, errExt)
+	// 	return
+	// }
 
-	// получение ID пользователя из сессии
-	userID, errExt := SessionGetUserID(c)
-	if errExt != nil {
-		respError(c, exterr.NewWithExtErr("Handler: Gratitude error", errExt))
-		return
-	}
+	// // получение ID пользователя из сессии
+	// userID, errExt := SessionGetUserID(c)
+	// if errExt != nil {
+	// 	respError(c, exterr.NewWithExtErr("Handler: Gratitude error", errExt))
+	// 	return
+	// }
 
-	respOk(c, fmt.Sprintf("Gratitude [%d]  succesfull for user[%d]", userID, 0))
-	requestBody := c.Request.Body
-	defer requestBody.Close()
+	// respOk(c, fmt.Sprintf("Gratitude [%d]  succesfull for user[%d]", userID, 0))
+	// requestBody := c.Request.Body
+	// defer requestBody.Close()
 
-	buf, err := io.ReadAll(requestBody)
-	if err != nil {
-		respError(c,
-			exterr.NewWithErr("Handler: BuyToken can't get request body", err).
-				SetErrCode(http.StatusBadRequest).
-				SetAltMsg(http.StatusText(http.StatusBadRequest)))
-		return
-	}
+	// buf, err := io.ReadAll(requestBody)
+	// if err != nil {
+	// 	respError(c,
+	// 		exterr.NewWithErr("Handler: BuyToken can't get request body", err).
+	// 			SetErrCode(http.StatusBadRequest).
+	// 			SetAltMsg(http.StatusText(http.StatusBadRequest)))
+	// 	return
+	// }
 
-	// Unmarshal
-	newPost := &TokenBuyRequest{}
-	err = json.Unmarshal(buf, newPost)
-	if err != nil {
-		respError(c,
-			exterr.NewWithErr("Handler: BuyToken unmarshal error", err).
-				SetErrCode(http.StatusBadRequest).
-				SetAltMsg(http.StatusText(http.StatusBadRequest)))
-		return
-	}
+	// // Unmarshal
+	// newPost := &TokenBuyRequest{}
+	// err = json.Unmarshal(buf, newPost)
+	// if err != nil {
+	// 	respError(c,
+	// 		exterr.NewWithErr("Handler: BuyToken unmarshal error", err).
+	// 			SetErrCode(http.StatusBadRequest).
+	// 			SetAltMsg(http.StatusText(http.StatusBadRequest)))
+	// 	return
+	// }
 
-	res, _ := h.services.EthApi.BuyTokens(newPost.TokenAmount, newPost.Wallet)
-	if err != nil {
-		respError(c,
-			exterr.NewWithErr("Handler: BuyToken can't buy tokens error", err).
-				SetErrCode(http.StatusBadRequest).
-				SetAltMsg(http.StatusText(http.StatusBadRequest)))
-		return
-	}
+	// res, _ := h.services.EthApi.BuyTokens(newPost.TokenAmount, newPost.Wallet)
+	// if err != nil {
+	// 	respError(c,
+	// 		exterr.NewWithErr("Handler: BuyToken can't buy tokens error", err).
+	// 			SetErrCode(http.StatusBadRequest).
+	// 			SetAltMsg(http.StatusText(http.StatusBadRequest)))
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, res)
+	// c.JSON(http.StatusOK, res)
 }

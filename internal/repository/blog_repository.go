@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"X-Blog/pkg/models"
 	"database/sql"
 	"fmt"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
 )

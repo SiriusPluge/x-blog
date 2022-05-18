@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"X-Blog/internal/service"
 	"time"
+	"voting-app/internal/service"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"

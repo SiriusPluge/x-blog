@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"X-Blog/pkg/models"
 	"net/http"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
 	"github.com/gin-gonic/contrib/sessions"

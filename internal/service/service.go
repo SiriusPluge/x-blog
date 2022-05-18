@@ -1,11 +1,11 @@
 package service
 
 import (
-	"X-Blog/internal/repository"
-	"X-Blog/pkg/models"
+	"voting-app/internal/repository"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
-	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/hyperledger/fabric-sdk-go/pkg/gateway"
 )
 
 type BlogApp interface {
@@ -27,19 +27,19 @@ type BlogApp interface {
 	UnfavoritesPost(userID, postID int) exterr.ErrExtender
 }
 
-type EthApi interface {
+type HyperLedApi interface {
 	AddWallet() exterr.ErrExtender
 	BuyTokens(tokenAmount int, address string) ([]byte, exterr.ErrExtender)
 }
 
 type Service struct {
 	BlogApp
-	EthApi
+	HyperLedApi
 }
 
-func NewService(repos *repository.Repository, ethClient *ethclient.Client) *Service {
+func NewService(repos *repository.Repository, contract *gateway.Contract) *Service {
 	return &Service{
-		BlogApp: NewGetService(repos.BlogApp),
-		EthApi: NewEthService(ethClient),
+		BlogApp:     NewGetService(repos.BlogApp),
+		HyperLedApi: NewEthService(contract),
 	}
 }

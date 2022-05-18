@@ -3,7 +3,7 @@ version: "3"
 services:
     database:
         image: postgres
-        container_name: postgres
+        container_name: voting_db
         environment:
             POSTGRES_DB: "postgres"
             POSTGRES_USER: "postgres"
@@ -13,18 +13,15 @@ services:
             - 5432:5432
         volumes:
             - ./source/db:/data/db
-        # networks:
-        #     - salair.ex
+        
     server:
-        container_name: server
+        container_name: voting_app
         restart: always
         build:
             context: .
             dockerfile: Dockerfile
         depends_on:
             - database
-        environment:
-            DATABASE_URL: postgres://postgres:1q2w3e4r5t@database:5432/postgres?sslmode=disable # To be moved to environment file
         ports:
             - 8081:8081
         links:

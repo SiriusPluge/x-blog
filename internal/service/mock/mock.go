@@ -5,7 +5,7 @@
 package mock_service
 
 import (
-	models "X-Blog/pkg/models"
+	models "voting-app/pkg/models"
 	reflect "reflect"
 
 	exterr "github.com/alexmolinanasaev/exterr"

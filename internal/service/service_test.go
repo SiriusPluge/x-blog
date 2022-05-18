@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
-	mock_repository "X-Blog/internal/repository/mock"
-	"X-Blog/internal/service"
-	"X-Blog/pkg/models"
+	mock_repository "voting-app/internal/repository/mock"
+	"voting-app/internal/service"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
 	"github.com/golang/mock/gomock"

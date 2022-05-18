@@ -5,7 +5,7 @@
 package mock_repository
 
 import (
-	models "X-Blog/pkg/models"
+	models "voting-app/pkg/models"
 	reflect "reflect"
 
 	exterr "github.com/alexmolinanasaev/exterr"

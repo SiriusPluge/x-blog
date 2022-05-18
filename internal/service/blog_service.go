@@ -1,9 +1,9 @@
 package service
 
 import (
-	"X-Blog/internal/repository"
-	"X-Blog/pkg/models"
 	"net/http"
+	"voting-app/internal/repository"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
 )

@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"X-Blog/pkg/models"
 	"fmt"
 	"strings"
+	"voting-app/pkg/models"
 
 	"github.com/ansel1/merry"
 	"github.com/jmoiron/sqlx"

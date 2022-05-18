@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"X-Blog/pkg/models"
+	"voting-app/pkg/models"
 
 	"github.com/alexmolinanasaev/exterr"
 )
